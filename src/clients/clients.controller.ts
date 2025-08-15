@@ -1,6 +1,9 @@
-import { Controller, Get, Post, Body, Param, Delete, Patch, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Patch, Query, UseGuards } from '@nestjs/common';
 import { ClientsService } from './clients.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
 
+@UseGuards(JwtAuthGuard, RolesGuard) 
 @Controller('clients')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
@@ -10,7 +13,7 @@ export class ClientsController {
     return this.clientsService.create(body);
   }
 
- @Get()
+  @Get()
   findAll(@Query('serviceIds') serviceIds: string, @Query() query: any) {
     let serviceIdsArray: number[] | undefined;
 
@@ -24,7 +27,6 @@ export class ClientsController {
     });
   }
 
-  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.clientsService.findOne(+id);

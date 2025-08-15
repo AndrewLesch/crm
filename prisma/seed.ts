@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -30,7 +31,6 @@ async function main() {
       });
     }
   }
-
   console.log('Seed services completed!');
 
   const clients = [
@@ -107,8 +107,27 @@ async function main() {
       });
     }
   }
-
   console.log('Seed clients completed!');
+
+  const users = [
+    { email: 'user@example.com', password: 'user123', role: Role.USER },
+    { email: 'editor@example.com', password: 'editor123', role: Role.EDITOR },
+  ];
+
+  for (const u of users) {
+    const existing = await prisma.user.findUnique({ where: { email: u.email } });
+    if (!existing) {
+      const hashed = await bcrypt.hash(u.password, 10);
+      await prisma.user.create({
+        data: {
+          email: u.email,
+          password: hashed,
+          role: u.role,
+        },
+      });
+    }
+  }
+  console.log('Seed users completed!');
 }
 
 main()
