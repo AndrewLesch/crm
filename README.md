@@ -11,12 +11,12 @@
 ## Технологии
 - Backend: NestJS, Prisma, PostgreSQL  
 - Auth: JWT + Guards (USER — просмотр, EDITOR — полный доступ)  
-- Frontend: React (SPA, формы и фильтры) 
+- Frontend: React (SPA, формы и фильтры) -> реализация в другом проекте
 - API: REST
 
 ## Тестовые пользователи
-- **Editor:** `editor@mail.com` / `editor123`  
-- **User:** `user@mail.com` / `user123`  
+- **Editor:** `editor@example.com` / `editor123`  
+- **User:** `user@example.com` / `user123`  
 
 ## Запуск
 npm install
